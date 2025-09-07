@@ -12,6 +12,11 @@ app.use(express.urlencoded({extended: false}))
 app.use('/', todoRouter)
 app.use('/user', userRouter)
 app.use((err,req,res,next) => {
+    console.error("ERROR CAUGHT IN MIDDLEWARE")
+    console.error("Message:", err.message)
+    console.error("Stack:", err.stack)
+    console.error("Full error object:", err)
+
     const statusCode = err.status || 500
     res.status(statusCode).json({
         error: {

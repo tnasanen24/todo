@@ -7,7 +7,7 @@ const { sign } = jwt
 
 const router = Router()
 
-router.post('signup', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
     const { user } = req.body
 
     if (!user || !user.email || !user.password) {
@@ -54,13 +54,13 @@ router.post('/signin', (req, res, next) => {
             compare(user.password, dbUser.password, (err, isMatch) => {
                 if (err) return next(err)
                 
-                if (isMatch) {
+                if (!isMatch) {
                     const error = new Error('Invalid password')
                     error.status = 401
                     return next(err)
                 }
 
-                const token = sign({ user: dbUser.email }, process.env.JWT_SECRET)
+                const token = sign({ user: dbUser.email }, process.env.JWT_SECRET_KEY)
                 res.status(200).json({
                     id: dbUser.id,
                     email: dbUser.email,
